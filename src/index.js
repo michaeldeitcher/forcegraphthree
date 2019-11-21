@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 var randomMaterial = () => {
     return new THREE.MeshBasicMaterial( { color: new THREE.Color(Math.random(), Math.random(), Math.random()) } );
@@ -92,6 +93,8 @@ var idIndex = 0;
   var renderer = new THREE.WebGLRenderer();
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
+
+  var controls = new OrbitControls( camera, renderer.domElement );
   
   var geometry = new THREE.SphereGeometry( .3 );
   var addToScene = node => {
@@ -163,14 +166,24 @@ var idIndex = 0;
   }
   
   window.addEventListener( 'mousemove', onMouseMove, false );
+
+  function onResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  window.addEventListener( 'resize', onResize, false );  
+
   function animate() {
       requestAnimationFrame( animate );
   
     render();
-    
-    forceDirected(graph);
+    for(let i=0; i < 10; i++)
+      forceDirected(graph);
     removeLinesFromScene();
     everyNode(graph, updatePosition);                
     everyEdge(graph, addLineToScene);
+    controls.update();
   }
   animate();
