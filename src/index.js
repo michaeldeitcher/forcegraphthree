@@ -41,7 +41,7 @@ var idIndex = 0;
     return graph;
   }
   
-  var graph = treeGraph(3,2);
+  var graph = treeGraph(4,4);
   function everyNode(graph, callback ) {
     for (let node of graph ) {
       callback(node);
